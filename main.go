@@ -16,10 +16,20 @@ func f(value string) {
 
 func main() {
 
-	go f("goroutineを使って実行")
+	// go f("goroutineを使って実行")
 
-	f("普通に実行")
+	// f("普通に実行")
 
-	fmt.Println("done")
+	// fmt.Println("done")
+
+	messages := make(chan string)
+
+	go func() {
+		messages <- "Hello"
+	}()
+
+	msg := <-messages
+
+	fmt.Println(msg)
 
 }
