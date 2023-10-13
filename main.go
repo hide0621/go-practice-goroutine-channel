@@ -5,45 +5,21 @@ import (
 	"time"
 )
 
-func f(value string) {
-
-	for i := 0; i < 3; i++ {
-		fmt.Println(value)
-		time.Sleep(3 * time.Second)
+func sub() {
+	for {
+		fmt.Println("Sub Loop")
+		time.Sleep(100 * time.Millisecond)
 	}
-
 }
 
 func main() {
 
-	// ゴルーチンの勉強
+	go sub()
 
-	// go f("goroutineを使って実行")
+	go sub()
 
-	// f("普通に実行")
-
-	// fmt.Println("done")
-
-	// 簡単なチャネルの勉強
-
-	// messages := make(chan string)
-
-	// go func() {
-	// 	messages <- "Hello"
-	// }()
-
-	// msg := <-messages
-
-	// fmt.Println(msg)
-
-	// バッファとデッドロックの勉強
-
-	ch := make(chan int, 2)
-
-	// ch <- 1
-	// ch <- 2
-	// ch <- 3
-
-	fmt.Println(<-ch)
-	fmt.Println(<-ch)
+	for {
+		fmt.Println("Main Loop")
+		time.Sleep(200 * time.Millisecond)
+	}
 }
