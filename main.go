@@ -2,36 +2,24 @@ package main
 
 import (
 	"fmt"
-	"sync"
 )
+
+func createCounter() func() int {
+
+	count := 0
+
+	return func() int {
+		count++
+		return count
+	}
+}
 
 func main() {
 
-	wg := new(sync.WaitGroup)
+	counter := createCounter()
 
-	wg.Add(3)
-
-	go func() {
-		for i := 0; i < 100; i++ {
-			fmt.Println("1st Groutine")
-		}
-		wg.Done()
-	}()
-
-	go func() {
-		for i := 0; i < 100; i++ {
-			fmt.Println("2nd Groutine")
-		}
-		wg.Done()
-	}()
-
-	go func() {
-		for i := 0; i < 100; i++ {
-			fmt.Println("3rd Groutine")
-		}
-		wg.Done()
-	}()
-
-	wg.Wait()
+	fmt.Println(counter())
+	fmt.Println(counter())
+	fmt.Println(counter())
 
 }
