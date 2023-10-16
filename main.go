@@ -2,24 +2,44 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
-func sub() {
-	for {
-		fmt.Println("Sub Loop")
-		time.Sleep(100 * time.Millisecond)
-	}
+var st struct{ A, B, C int }
+
+var mutex *sync.Mutex
+
+func UpdateAndPrint(n int) {
+
+	mutex.Lock()
+
+	st.A = n
+	time.Sleep(time.Millisecond)
+	st.B = n
+	time.Sleep(time.Millisecond)
+	st.C = n
+	time.Sleep(time.Millisecond)
+	fmt.Println(st)
+
+	mutex.Unlock()
 }
 
 func main() {
 
-	go sub()
+	mutex = new(sync.Mutex)
 
-	go sub()
-
-	for {
-		fmt.Println("Main Loop")
-		time.Sleep(200 * time.Millisecond)
+	for i := 0; i < 5; i++ {
+		go func() {
+			for j := 0; j < 1000; j++ {
+				UpdateAndPrint(j)
+			}
+		}()
 	}
+
+	// ゴルーチンが走る前にメインルーチンが終わらないようにしている
+	for {
+
+	}
+
 }
